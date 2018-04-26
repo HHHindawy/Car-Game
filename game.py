@@ -10,7 +10,6 @@ RED = (255, 0, 0)
 CAR_COLOR = (181, 230, 29)
 TEXT_COLOR = (250, 105, 10)
 
-
 pygame.init()
 
 
@@ -19,7 +18,7 @@ class Car:
         self.image = ""
         self.x = x
         self.y = y
-        self. dx = dx
+        self.dx = dx
         self.dy = dy
         self.width = width
         self.height = height
@@ -42,7 +41,7 @@ class Car:
     #     pygame.draw.rect(screen, self.color, [self.x, self.y, self.width, self.height], 0)
 
     def check_out_of_screen(self):
-        if self.x+self.width > 400 or self.x < 0:
+        if self.x + self.width > 400 or self.x < 0:
             self.x -= self.dx
 
 
@@ -67,7 +66,7 @@ clock = pygame.time.Clock()
 
 # Create a player car object
 player = Car(175, 475, 0, 0, 70, 131, RED)
-player.load_image("player.png")
+player.load_image("car.png")
 
 collision = True
 
@@ -134,12 +133,20 @@ while not done:
                 player.dx = 4
             elif event.key == pygame.K_LEFT:
                 player.dx = -4
+            elif event.key == pygame.K_UP:
+                player.dy = -4
+            elif event.key == pygame.K_DOWN:
+                player.dy = 4
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT:
                 player.dx = 0
             elif event.key == pygame.K_RIGHT:
                 player.dx = 0
+            elif event.key == pygame.K_UP:
+                player.dy = 0
+            elif event.key == pygame.K_DOWN:
+                player.dy = 0
 
     # --- Game logic should go here
 
@@ -159,6 +166,7 @@ while not done:
 
     player.draw_image()
     player.move_x()
+    player.move_y()
     player.check_out_of_screen()
 
     # # Check if the enemy cars move out of the screen.

@@ -1,2 +1,2 @@
 # Car-Game
-A python based car game using "pygame" ENVIRONTMENT
+A python based car game using "pygame" library

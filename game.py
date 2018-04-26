@@ -1,50 +1,12 @@
 import pygame
 import random
 
-# Define some colors
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-GRAY = (159, 163, 168)
-GREEN = (0, 255, 0)
-RED = (255, 0, 0)
-CAR_COLOR = (181, 230, 29)
-TEXT_COLOR = (250, 105, 10)
+from Shared import *
+from Car import Car
+from Stripes import Stripes
+
 
 pygame.init()
-
-
-class Car:
-    def __init__(self, x=0, y=0, dx=4, dy=0, width=30, height=30, color=RED):
-        self.image = ""
-        self.x = x
-        self.y = y
-        self.dx = dx
-        self.dy = dy
-        self.width = width
-        self.height = height
-        self.color = color
-
-    def load_image(self, img):
-        self.image = pygame.image.load(img).convert()
-        self.image.set_colorkey(BLACK)
-
-    def draw_image(self):
-        screen.blit(self.image, [self.x, self.y])
-
-    def move_x(self):
-        self.x += self.dx
-
-    def move_y(self):
-        self.y += self.dy
-
-    # def draw_rect(self):
-    #     pygame.draw.rect(screen, self.color, [self.x, self.y, self.width, self.height], 0)
-
-    def check_out_of_screen(self):
-        if self.x + self.width > 400 or self.x < 0:
-            self.x -= self.dx
-        if self.y + self.height > 700 or self.y < 0:
-            self.y -= self.dy
 
 
 # def check_collision(player_x, player_y, player_width, player_height, car_x, car_y, car_width, car_height):
@@ -54,20 +16,20 @@ class Car:
 #         return False
 
 
-# Set the width and height of the screen [width, height]
-size = (400, 700)
-screen = pygame.display.set_mode(size)
+# Set the width and height of the window [width, height]
+size = (WINDOW_WIDTH, WINDOW_HIEGHT)
+window = pygame.display.set_mode(size)
 
-pygame.display.set_caption("Ride the Road")
+pygame.display.set_caption("RACING")
 
 # Loop until the user clicks the close button.
 done = False
 
-# Used to manage how fast the screen updates
+# Used to manage how fast the window updates
 clock = pygame.time.Clock()
 
 # Create a player car object
-player = Car(175, 475, 0, 0, 70, 131, RED)
+player = Car(175, 475, 0, 0, 70, 130, RED)
 player.load_image("car.png")
 
 collision = True
@@ -83,10 +45,10 @@ collision = True
 
 
 # def draw_main_menu():
-#     screen.blit(text_title, [size[0] / 2 - 106, size[1] / 2 - 100])
+#     window.blit(text_title, [size[0] / 2 - 106, size[1] / 2 - 100])
 #     score_text = font_40.render("Score: " + str(score), True, TEXT_COLOR)
-#     screen.blit(score_text, [size[0] / 2 - 70, size[1] / 2 - 30])
-#     screen.blit(text_ins, [size[0] / 2 - 85, size[1] / 2 + 40])
+#     window.blit(score_text, [size[0] / 2 - 70, size[1] / 2 - 30])
+#     window.blit(text_ins, [size[0] / 2 - 85, size[1] / 2 + 40])
 #     pygame.display.flip()
 
 
@@ -100,16 +62,10 @@ collision = True
 
 
 # Setup the stripes.
-stripes = []
-stripe_count = 20
-stripe_x = 185
-stripe_y = -10
 stripe_width = 20
-stripe_height = 80
-space = 20
-for i in range(stripe_count):
-    stripes.append([190, stripe_y])
-    stripe_y += stripe_height + space
+stripe_x = WINDOW_WIDTH / 2 - stripe_width / 2
+stripes = Stripes(x=stripe_x)
+stripes.build()
 
 # -------- Main Program Loop -----------
 while not done:
@@ -152,26 +108,23 @@ while not done:
 
     # --- Game logic should go here
 
-    # --- Screen-clearing code goes here
-    screen.fill(GRAY)
+    # --- window-clearing code goes here
+    window.fill(GRAY)
 
     # --- Drawing code should go here
     # if not collision:
     # Draw the stripes
-    for i in range(stripe_count):
-        pygame.draw.rect(screen, WHITE, [stripes[i][0], stripes[i][1], stripe_width, stripe_height])
-    # Move the stripes
-    for i in range(stripe_count):
-        stripes[i][1] += 3
-        if stripes[i][1] > size[1]:
-            stripes[i][1] = -40 - stripe_height
 
-    player.draw_image()
+    for stripe in stripes.get():
+        pygame.draw.rect(window, WHITE, stripe)
+    
+    stripes.move()
+    player.draw_image(window)
     player.move_x()
     player.move_y()
-    player.check_out_of_screen()
+    player.check_out_of_window()
 
-    # # Check if the enemy cars move out of the screen.
+    # # Check if the enemy cars move out of the window.
     # for i in range(car_count):
     #     cars[i].draw_rect()
     #     cars[i].y += cars[i].dy
@@ -190,7 +143,7 @@ while not done:
 
     # Draw the score.
     # txt_score = font_30.render("Score: "+str(score), True, WHITE)
-    # screen.blit(txt_score, [15, 15])
+    # window.blit(txt_score, [15, 15])
 
     pygame.display.flip()
     # else:

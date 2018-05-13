@@ -25,8 +25,8 @@ class Car:
     def move_y(self):
         self.y += self.dy
 
-    # def draw_rect(self):
-    #     pygame.draw.rect(screen, self.color, [self.x, self.y, self.width, self.height], 0)
+    def draw_rect(self, window):
+        pygame.draw.rect(window, self.color, [self.x, self.y, self.width, self.height], 0)
 
     def check_out_of_window(self):
         if self.x + self.width > WINDOW_WIDTH or self.x < 0:

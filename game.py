@@ -58,6 +58,7 @@ car_count = 2
 for i in range(car_count):
     x = random.randrange(0, 340)
     car = Car(x, random.randrange(-150, -50), 0, random.randint(5, 10), 60, 60, CAR_COLOR)
+    car.load_image("enemy_car.png")
     cars.append(car)
 
 
@@ -126,7 +127,7 @@ while not done:
 
         # # Check if the enemy cars move out of the window.
         for i in range(car_count):
-            cars[i].draw_rect(window)
+            cars[i].draw_image(window)
             cars[i].y += cars[i].dy
             if cars[i].y > size[1]:
                 score += 10

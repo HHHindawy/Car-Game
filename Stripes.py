@@ -20,7 +20,7 @@ class Stripes:
         for i in range(self.count):
             self.stripes[i][1] += self.speed
             if self.stripes[i][1] > WINDOW_HIEGHT:
-                print(self.stripes[i][1])
+                # print(self.stripes[i][1])
                 self.stripes[i][1] = - (self.height + self.spacing)
 
     def get(self):
